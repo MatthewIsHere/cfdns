@@ -1,6 +1,14 @@
 [package]
 name = "cfdns"
 version = "0.1.0"
+authors = ["Matthew Lyon <matthew@lyon.systems>"]
+license = "Apache-2.0"
+description = "A Cloudflare Dynamic DNS update tool"
+readme = "README.md"
+homepage = "https://github.com/MatthewIsHere/cfdns"
+repository = "https://github.com/MatthewIsHere/cfdns"
+keywords = ["cli", "dns", "cloudflare", "ddns", "tool"]
+categories = ["command-line-utilities"]
 edition = "2024"
 
 [dependencies]
@@ -26,6 +34,6 @@ indicatif = "0.18.3"
 [profile.release]
 opt-level = "s"
 lto = true
-codegen-units = 1
 panic = "abort"
+codegen-units = 1
 strip = true
