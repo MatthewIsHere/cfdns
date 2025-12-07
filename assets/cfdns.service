@@ -1,0 +1,6 @@
+[Unit]
+Description=Cloudflare DDNS updater
+
+[Service]
+Type=oneshot
+ExecStart={{EXE}} update
