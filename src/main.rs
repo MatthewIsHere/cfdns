@@ -76,7 +76,7 @@ enum Commands {
     /// Setup initial configuration for cfdns
     Setup,
 
-    // /// Opens your default editor to configure cfdns
+    /// Opens your default editor to configure cfdns
     Edit
 }
 
