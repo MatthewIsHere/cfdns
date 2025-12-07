@@ -1,3 +1,5 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 mod setup;
 pub use setup::*;
 mod update;

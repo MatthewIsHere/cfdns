@@ -1,3 +1,5 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use std::collections::HashMap;
 use std::fmt::Display;
 use std::fs::{self, File};

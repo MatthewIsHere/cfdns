@@ -1,5 +1,6 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use std::fmt::Display;
-
 use futures::{TryStream, TryStreamExt};
 use rtnetlink::{Error, Handle, packet_route::{address::AddressMessage, link::{LinkAttribute, LinkFlags, LinkMessage}}};
 use tracing::{instrument, warn};

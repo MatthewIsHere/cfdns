@@ -1,3 +1,5 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use crate::config::{Config, ConfigError};
 use colored::Colorize;
 use inquire::{InquireError, prompt_confirmation};

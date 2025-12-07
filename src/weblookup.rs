@@ -1,7 +1,8 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use std::net::{AddrParseError, IpAddr, Ipv4Addr, Ipv6Addr};
 use miette::Diagnostic;
 use thiserror::Error;
-
 
 const CLOUDFLARE_TRACE_URL: &str = "https://cloudflare.com/cdn-cgi/trace";
 static USER_AGENT: &str = concat!(

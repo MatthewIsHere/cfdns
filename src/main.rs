@@ -1,3 +1,5 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 #![feature(ip)]
 use clap::Parser;
 use clap::Subcommand;

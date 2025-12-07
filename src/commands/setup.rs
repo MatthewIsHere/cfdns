@@ -1,30 +1,21 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use crate::ZONE_CACHE_NAME;
 use crate::cache::Cache;
 use crate::cloudflare::make_client;
 use crate::cloudflare::zone::{ZoneError, fetch_zone_id, guess_zone_from_domain};
-use crate::config::Cloudflare;
-use crate::config::Config;
-use crate::config::ConfigError;
-use crate::config::Interface;
-use crate::config::Record;
-use crate::config::TypeOptions;
-use crate::networking::NetworkError;
-use crate::networking::list_interfaces;
-use cloudflare::framework;
-use cloudflare::framework::client::async_api::Client;
+use crate::config::{Cloudflare, Config, ConfigError, Interface, Record, TypeOptions};
+use crate::networking::{NetworkError, list_interfaces};
+use cloudflare::framework::{self, client::async_api::Client};
 use colored::Colorize;
-use inquire::Confirm;
-use inquire::InquireError;
-use inquire::Select;
-use inquire::Text;
-use miette::Diagnostic;
-use miette::Result;
-use tracing::instrument;
+use inquire::{Confirm, InquireError, Select, Text};
+use miette::{Diagnostic, Result};
 use std::collections::HashMap;
 use std::io;
 use std::path::Path;
 use std::process::exit;
 use thiserror::Error;
+use tracing::instrument;
 
 fn prompt_overwrite(config: &Config) -> Result<bool, InquireError> {
     Confirm::new(&format!(
@@ -36,7 +27,8 @@ fn prompt_overwrite(config: &Config) -> Result<bool, InquireError> {
 }
 
 fn prompt_invalid_config(err: serde_yaml::Error) -> Result<bool, InquireError> {
-    Confirm::new(&format!("Your config could not be parsed because: {}\nWould you like to overwrite it? ", 
+    Confirm::new(&format!(
+        "Your config could not be parsed because: {}\nWould you like to overwrite it? ",
         err
     )).with_default(true).prompt()
 }
@@ -125,17 +117,18 @@ async fn setup_inner(custom_config: Option<&Path>) -> Result<(), SetupError> {
         let load = match custom_config {
             Some(custom) => Config::load(custom),
             None => Config::load_default(),
-        }.map(Some);
+        }
+        .map(Some);
         match load {
             Err(ConfigError::NotFound { path: _ } | ConfigError::Missing { path: _ }) => Ok(None),
             Err(ConfigError::Yaml { source }) => {
                 let overwrite = prompt_invalid_config(source)?;
                 if !overwrite {
-                    return Err(SetupError::Cancelled)
+                    return Err(SetupError::Cancelled);
                 }
                 Ok(None)
-            },
-            others => others
+            }
+            others => others,
         }?
     };
     // Prompt if we found a config that already existed
@@ -230,9 +223,7 @@ pub enum SetupError {
 impl From<InquireError> for SetupError {
     fn from(value: InquireError) -> Self {
         match value {
-            InquireError::OperationCanceled => {
-                SetupError::Cancelled
-            },
+            InquireError::OperationCanceled => SetupError::Cancelled,
             InquireError::OperationInterrupted => {
                 println!(""); // Need extra line because CTRL-C messes with current line format
                 SetupError::Cancelled

@@ -1,3 +1,5 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
 use futures::TryStreamExt;
@@ -138,16 +140,3 @@ fn compute_preference(flags: &Option<AddressFlags>, addr: &IpAddr) -> Preference
         }
     }
 }
-
-// async fn has_default_route(
-//     handle: &Handle,
-//     if_index: u32,
-// ) -> Result<bool, rtnetlink::Error> {
-//     let mut routes = handle.route().get(RouteMessageBuilder::new())
-//     while let Some(route) = routes.try_next().await? {
-//         if let RouteScope::Universe = route.header.scope {
-//             return Ok(true)
-//         }
-//     }
-//     Ok(false)
-// }

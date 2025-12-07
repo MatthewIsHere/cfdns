@@ -1,3 +1,5 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use cloudflare::{
     endpoints::dns::dns::DnsRecord,
     framework::client::async_api::Client,

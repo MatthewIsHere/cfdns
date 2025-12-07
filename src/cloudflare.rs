@@ -1,5 +1,6 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use std::sync::Arc;
-
 use cloudflare::framework::{
     self, Environment,
     auth::Credentials,

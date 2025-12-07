@@ -1,5 +1,6 @@
+// Copyright 2025 Matthew Lyon
+// SPDX-License-Identifier: Apache-2.0
 use std::{fs, io, process::Command};
-
 use colored::Colorize;
 use directories::BaseDirs;
 use miette::{Diagnostic, Result};
