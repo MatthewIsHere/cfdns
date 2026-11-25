@@ -1,5 +1,6 @@
 // Copyright 2025 Matthew Lyon
 // SPDX-License-Identifier: Apache-2.0
+#![allow(unstable_name_collisions)]
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
 use futures::TryStreamExt;
@@ -11,6 +12,7 @@ use rtnetlink::{
 use thiserror::Error;
 use tracing::{debug, instrument, warn};
 
+use crate::ipaddr_ext::IpAddrExt;
 use crate::netlink::{get_addrs_by_link, get_link_by_name, get_links};
 
 pub async fn list_interfaces(handle: &Handle) -> Result<Vec<String>, NetworkError> {

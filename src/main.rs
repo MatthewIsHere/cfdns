@@ -1,6 +1,5 @@
 // Copyright 2025 Matthew Lyon
 // SPDX-License-Identifier: Apache-2.0
-#![feature(ip)]
 use clap::Parser;
 use clap::Subcommand;
 use tracing::level_filters::LevelFilter;
@@ -17,6 +16,7 @@ mod commands;
 mod cache;
 mod netlink;
 mod networking;
+mod ipaddr_ext;
 mod config;
 mod weblookup;
 
