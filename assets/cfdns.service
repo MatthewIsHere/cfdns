@@ -4,3 +4,6 @@ Description=Cloudflare DDNS updater
 [Service]
 Type=oneshot
 ExecStart={{EXE}} update
+
+[Install]
+WantedBy=default.target

@@ -21,12 +21,14 @@ pub const TIMER_UNIT: &str = include_str!(concat!(
 pub async fn schedule(off: bool) -> Result<()> {
     if off {
         disable_systemd_timer()?;
+        disable_systemd_service()?;
         println!("{}", "Disabled DDNS systemd timer".yellow());
         return Ok(());
     }
 
     let minutes = "5";
     install_systemd_units()?;
+    enable_systemd_service()?;
     enable_systemd_timer()?;
     println!("{} {} {}", "Successfully scheduled DDNS updates every".green().bold(), minutes.bold(), "minutes".green().bold());
     Ok(())
@@ -56,8 +58,15 @@ pub fn install_systemd_units() -> Result<(), ScheduleError> {
     Command::new("systemctl")
         .args(["--user", "daemon-reload"])
         .status()
-        .map_err(ScheduleError::Systemctl)?;
+        .map_err(|e| ScheduleError::Systemctl { unit: "daemon reload", source: e })?;
+    Ok(())
+}
 
+pub fn enable_systemd_service() -> Result<(), ScheduleError> {
+    Command::new("systemctl")
+        .args(["--user", "enable", "cfdns.service"])
+        .status()
+        .map_err(|e| ScheduleError::Systemctl { unit: "enable cfdns.service", source: e })?;
     Ok(())
 }
 
@@ -65,7 +74,7 @@ pub fn enable_systemd_timer() -> Result<(), ScheduleError> {
     Command::new("systemctl")
         .args(["--user", "enable", "--now", "cfdns.timer"])
         .status()
-        .map_err(ScheduleError::Systemctl)?;
+        .map_err(|e| ScheduleError::Systemctl { unit: "enable cfdns.timer", source: e })?;
     Ok(())
 }
 
@@ -73,10 +82,17 @@ pub fn disable_systemd_timer() -> Result<(), ScheduleError> {
     Command::new("systemctl")
         .args(["--user", "disable", "--now", "cfdns.timer"])
         .status()
-        .map_err(ScheduleError::Systemctl)?;
+        .map_err(|e| ScheduleError::Systemctl { unit: "disable cfdns.timer", source: e })?;
     Ok(())
 }
 
+pub fn disable_systemd_service() -> Result<(), ScheduleError> {
+    Command::new("systemctl")
+        .args(["--user", "disable", "--now", "cfdns.service"])
+        .status()
+        .map_err(|e| ScheduleError::Systemctl { unit: "disable cfdns.service", source: e })?;
+    Ok(())
+}
 
 #[derive(Debug, Error, Diagnostic)]
 pub enum ScheduleError {
@@ -85,8 +101,11 @@ pub enum ScheduleError {
     #[error("failed to write service units to systemd folder")]
     #[diagnostic(help("check your directory permissions for `.config/systemd`"))]
     Io(#[source] io::Error),
-    #[error("failed to activate systemd unit")]
-    Systemctl(#[source] io::Error),
+    #[error("failed to run systemd command: {unit}")]
+    Systemctl {
+        unit: &'static str,
+        source: io::Error
+    },
     #[error("could not locate path of current executable")]
     CurrentExe(#[source] io::Error)
 }
