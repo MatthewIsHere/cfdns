@@ -63,7 +63,7 @@ pub mod zone {
         Api(String, u16),
 
         #[error("Cloudflare API request failed for zone `{0}`")]
-        Invalid(String, #[source] reqwest::Error),
+        Invalid(String, #[source] Box<dyn std::error::Error + Send + Sync>),
     }
 
     fn from_api(zone_name: String, value: ApiFailure) -> ZoneError {
@@ -77,7 +77,7 @@ pub mod zone {
                     ZoneError::Api(zone_name, code.as_u16())
                 }
             }
-            ApiFailure::Invalid(e) => ZoneError::Invalid(zone_name, e),
+            ApiFailure::Invalid(e) => ZoneError::Invalid(zone_name, Box::new(e)),
         }
     }
 }
