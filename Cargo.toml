@@ -1,6 +1,6 @@
 [package]
 name = "cfdns"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Matthew Lyon <matthew@lyon.systems>"]
 license = "Apache-2.0"
 description = "A Cloudflare Dynamic DNS update tool"

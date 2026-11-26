@@ -30,7 +30,7 @@ pub static CONSOLE_PRINT: OnceLock<bool> = OnceLock::new();
 #[derive(Parser, Debug)]
 #[command(
     author = "Matthew Lyon",
-    version = "0.1",
+    version = "0.2.1",
     about = "A quick tool to manage Cloudflare DDNS records."
 )]
 struct Cli {
